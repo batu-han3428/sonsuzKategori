@@ -1,0 +1,74 @@
+﻿@model TagBuilder
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+@section style{
+    <style>
+        .myJstree {
+            list-style-image: url(folder.png);
+        }
+
+            .myJstree ul {
+                display: none;
+            }
+
+            .myJstree li {
+                color: chocolate;
+            }
+
+                .myJstree li:hover {
+                    cursor: pointer;
+                }
+
+            .myJstree, .myJstree ul {
+                position: relative;
+            }
+
+        .ok {
+            position: absolute;
+            transform: rotate(270deg);
+            left: 0;
+            color: chocolate;
+        }
+    </style>
+}
+
+@Model
+
+@section Scripts{
+    <script>
+        $(".myJstree li").click(function (event) {
+            event.stopPropagation();
+            var a = $(this);
+            if ($(this).children("ul").html() != undefined) {
+
+                $(this).children("ul").toggle("slide", function () {
+
+                    if ($(a).children("ul").css("display") != "none") {
+                        $(a).prev().css({
+                            "transform": "rotate(0deg)",
+                            "transition": "500ms"
+                        });
+                    } else {
+                        $(a).prev().css({
+                            "transform": "rotate(270deg)",
+                            "transition": "500ms"
+                        });
+                    }
+                });
+            }
+        });
+
+        $(".myJstree li").each(function (index, element) {
+
+            if ($(element).children("ul").html() != undefined) {
+
+                $(element).before("<i class='bi bi-caret-down-fill ok'></i>");
+            }
+        });
+
+
+    </script>
+}
