@@ -8,7 +8,7 @@
     <style>
         .myJstree {
             list-style-image: url(folder.png);
-            width:100%;
+            width: 100%;
         }
 
             .myJstree ul {
@@ -37,8 +37,8 @@
         .anaDiv {
             width: 300px;
             padding: 10px 10px;
-            height:300px;
-            overflow:auto;        
+            height: 300px;
+            overflow: auto;
         }
 
         .form-floating > .form-control {
@@ -80,95 +80,121 @@
         </div>
     </div>
 </div>
-                @section Scripts{
-                    <script>
-                      
-                        $(".myJstree li").click(function (event) {
-                            event.stopPropagation();
-                            var a = $(this);
-                            if ($(this).children("ul").html() != undefined) {
-                                $(this).children("ul").toggle("slide", function () {
-                                    if ($(a).children("ul").css("display") != "none") {
-                                        $(a).prev().css({
-                                            "transform": "rotate(0deg)",
-                                            "transition": "500ms"
-                                        });
-                                    } else {
-                                        $(a).prev().css({
-                                            "transform": "rotate(270deg)",
-                                            "transition": "500ms"
-                                        });
-                                    }
+@section Scripts{
+    <script>
+        $(".myJstree li").click(function (event) {
+            event.stopPropagation();
+            var a = $(this);
+            if ($(this).children("ul").html() != undefined) {
+                $(this).children("ul").toggle("slide", function () {
+                    if ($(a).children("ul").css("display") != "none") {
+                        $(a).prev().css({
+                            "transform": "rotate(0deg)",
+                            "transition": "500ms"
+                        });
+                    } else {
+                        $(a).prev().css({
+                            "transform": "rotate(270deg)",
+                            "transition": "500ms"
+                        });
+                    }
+                });
+            }
+        });
+
+        $(".myJstree li").each(function (index, element) {
+            if ($(element).children("ul").html() != undefined) {
+                $(element).before("<i class='bi bi-caret-down-fill ok'></i>");
+            }
+        });
+
+
+        function filtrele() {
+
+
+            var input, filter, ul, li, a, i, txtValue;
+            input = document.getElementById("ara");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("myJstree");
+            li = ul.querySelectorAll('li');
+
+
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("span")[0];
+                txtValue = a.textContent || a.innerText;
+
+                if (filter == "") {
+                    $(".myJstree ul").hide("slide");
+                    $(".myJstree li").prev("i").css({
+                        "transform": "rotate(270deg)",
+                        "transition": "500ms"
+                    });
+                }
+                else if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    var k = li[i];
+
+
+                    if (filter.length < 2) {
+
+                        $(k).parents("ul").show("slide");
+                    } else if (filter.length >= 2) {
+                        $(k).parents("ul").show("slide").finish();
+                    }
+
+
+                    $(k).parents("li").prev().css({
+                        "transform": "rotate(0deg)",
+                        "transition": "500ms"
+                    });
+
+
+                    setTimeout(() => {
+                        $(k).children("ul").hide("slide", function () {
+                            if ($(k).children("ul").css("display") == "none") {
+                                $(k).prev().css({
+                                    "transform": "rotate(270deg)",
+                                    "transition": "500ms"
                                 });
                             }
                         });
+                    }, 10);
 
-                        $(".myJstree li").each(function (index, element) {
-                            if ($(element).children("ul").html() != undefined) {
-                                $(element).before("<i class='bi bi-caret-down-fill ok'></i>");
-                            }
-                        });
-
-                        function filtrele() {
-                            var input, filter, ul, li, a, i, txtValue;
-                            input = document.getElementById("ara");
-                            filter = input.value.toUpperCase();
-                            ul = document.getElementById("myJstree");
-                            li = ul.querySelectorAll('li');
-                            for (i = 0; i < li.length; i++) {
-                                a = li[i].getElementsByTagName("span")[0];
-                                txtValue = a.textContent || a.innerText;
-                                if (filter == "") {
-                                    $(".myJstree ul").hide("slide");
-                                    $(".myJstree li").prev("i").css({
-                                        "transform": "rotate(270deg)",
-                                        "transition": "500ms"
-                                    });
-                                } else if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                                    var k = li[i];
-                                    $(k).parents("ul").show("slide");
-                                    $(k).parents("li").prev().css({
-                                        "transform": "rotate(0deg)",
-                                        "transition": "500ms"
-                                    });
-                                    setTimeout(() => {
-                                        $(k).children("ul").hide("slide", function () {
-                                            if ($(k).children("ul").css("display") == "none") {
-                                                $(k).prev().css({
-                                                    "transform": "rotate(270deg)",
-                                                    "transition": "500ms"
-                                                });
-                                            }
-                                        });
-                                    }, 10);
-                                } else {
-                                    var sayi = 0;
-                                    var bos = 0;
-                                    $(".myJstree span").each(function () {
-                                        sayi++;
-                                        if ($(k).text() == "") {
-                                            bos++;
-                                        }
-                                    });
-                                    if (sayi === bos) {
-                                        $(".myJstree ul").hide("slide");
-                                        $(".myJstree li").prev("i").css({
-                                            "transform": "rotate(270deg)",
-                                            "transition": "500ms"
-                                        });
-                                    }
-                                    if ($(k).children("ul").html() != undefined) {
-                                        $(k).siblings("li").children("ul").hide("slide", function () {
-                                            if ($(k).siblings("li").children("ul").css("display") == "none") {
-                                                $(k).siblings("li").prev().css({
-                                                    "transform": "rotate(270deg)",
-                                                    "transition": "500ms"
-                                                });
-                                            }
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                    </script>
                 }
+                else {
+
+                    var sayi = 0;
+                    var bos = 0;
+                    $(".myJstree span").each(function () {
+                        sayi++;
+                        if ($(k).text() == "") {
+                            bos++;
+                        }
+                    });
+                    if (sayi === bos) {
+                        $(".myJstree ul").hide("slide");
+                        $(".myJstree li").prev("i").css({
+                            "transform": "rotate(270deg)",
+                            "transition": "500ms"
+                        });
+                    }
+                    // if($(k).children("ul").html() != undefined){
+                    //     $(k).siblings("li").children("ul").hide("slide",function(){
+                    //         if($(k).siblings("li").children("ul").css("display") == "none"){
+                    //             $(k).siblings("li").prev().css({
+                    //                 "transform":"rotate(270deg)",
+                    //                 "transition":"500ms"
+                    //             });
+                    //         }
+                    //     });
+                    // }
+
+                }
+
+            }
+
+        }
+
+
+
+    </script>
+}
