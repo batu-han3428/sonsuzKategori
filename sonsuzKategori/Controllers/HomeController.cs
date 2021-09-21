@@ -25,8 +25,8 @@ namespace sonsuzKategori.Controllers
         public IActionResult Index()
         {
             var tb = new TagBuilder("ul");
-            tb.MergeAttribute("style", "list-style-image: url(folder.png);");
             tb.AddCssClass("myJstree");
+            tb.GenerateId("myJstree", "myJstree");
             using (SqlDbContext vt = new SqlDbContext())
             {
 
@@ -36,7 +36,7 @@ namespace sonsuzKategori.Controllers
 
                 foreach (urunKategorileri anamenu in Kategori)
                 {
-                    tb.InnerHtml.AppendHtml("<li>" + anamenu.urunKategorileriKategoriAdi + Altkategori(anamenu.urunKategorileriId) + "</li>");
+                    tb.InnerHtml.AppendHtml("<li><span>" + anamenu.urunKategorileriKategoriAdi +"</span>" + Altkategori(anamenu.urunKategorileriId) + "</li>");
                 }
 
             }
@@ -61,10 +61,10 @@ namespace sonsuzKategori.Controllers
                                  where i.urunKategorileriUstId == id
                                  select i;
 
-                    ab = "<ul id='menu'>";
+                    ab = "<ul>";
                     foreach (urunKategorileri altkategori in altKat)
                     {
-                        ab += "<li>" + altkategori.urunKategorileriKategoriAdi + Altkategori(altkategori.urunKategorileriId);
+                        ab += "<li><span>" + altkategori.urunKategorileriKategoriAdi+ "</span>" + Altkategori(altkategori.urunKategorileriId);
                         
                         ab += "</li>";
                     }
