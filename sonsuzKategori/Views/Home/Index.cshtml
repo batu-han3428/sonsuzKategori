@@ -65,6 +65,13 @@
                 opacity: 0.65;
                 transform: scale(0.85) translateY(-0.3rem) translateX(0.15rem);
             }
+
+        .renk {
+            background-color: chocolate;
+            color: white;
+            transition: 1s;
+            border-radius: 10%;
+        }
     </style>
 }
 <div class="container">
@@ -111,10 +118,10 @@
 
         function filtrele() {
 
-
             var input, filter, ul, li, a, i, txtValue;
             input = document.getElementById("ara");
             filter = input.value.toUpperCase();
+            renk = input.value;
             ul = document.getElementById("myJstree");
             li = ul.querySelectorAll('li');
 
@@ -129,6 +136,7 @@
                         "transform": "rotate(270deg)",
                         "transition": "500ms"
                     });
+                    $(a).removeClass("renk");
                 }
                 else if (txtValue.toUpperCase().indexOf(filter) > -1) {
                     var k = li[i];
@@ -140,7 +148,9 @@
                     } else if (filter.length >= 2) {
                         $(k).parents("ul").show("slide").finish();
                     }
-
+                    if (txtValue.indexOf(renk) > -1) {
+                        $(k).children("span").addClass("renk");
+                    }
 
                     $(k).parents("li").prev().css({
                         "transform": "rotate(0deg)",
@@ -148,19 +158,31 @@
                     });
 
 
-                    setTimeout(() => {
-                        $(k).children("ul").hide("slide", function () {
-                            if ($(k).children("ul").css("display") == "none") {
-                                $(k).prev().css({
-                                    "transform": "rotate(270deg)",
-                                    "transition": "500ms"
-                                });
-                            }
-                        });
-                    }, 10);
+                    // setTimeout(() => {
+                    //     $(k).children("ul").hide("slide", function () {
+
+                    //         if($(a).hasClass("renk")){
+                    //             $(a).removeClass("renk");
+                    //         }
+                    //         $(k).children("ul").find("span").removeClass("renk");
+                    //         if ($(k).children("ul").css("display") == "none") {
+
+                    //             $(k).prev().css({
+                    //                 "transform": "rotate(270deg)",
+                    //                 "transition": "500ms"
+                    //             });
+
+                    //         }
+
+                    //     });
+                    // }, 10);
 
                 }
                 else {
+
+                    if ($(a).hasClass("renk")) {
+                        $(a).removeClass("renk");
+                    }
 
                     var sayi = 0;
                     var bos = 0;
