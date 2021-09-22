@@ -19,9 +19,9 @@
                 color: chocolate;
             }
 
-                .myJstree li:hover {
-                    cursor: pointer;
-                }
+            .myJstree span:hover {
+                cursor: pointer;
+            }
 
             .myJstree, .myJstree ul {
                 position: relative;
@@ -36,9 +36,22 @@
 
         .anaDiv {
             width: 300px;
-            padding: 10px 10px;
             height: 300px;
             overflow: auto;
+        }
+
+        .myJstreeAnaDiv {
+            padding: 10px 10px;
+        }
+
+        .inputDiv {
+            position: -webkit-sticky; /* Safari */
+            position: sticky;
+            top: 0;
+            z-index: 9999999;
+            background: white;
+            width: 100%;
+            padding: 0 5px;
         }
 
         .form-floating > .form-control {
@@ -72,28 +85,53 @@
             transition: 1s;
             border-radius: 10%;
         }
+
+        .anaDiv::-webkit-scrollbar {
+            width: 10px;
+            background-color: white;
+        }
+
+        .anaDiv::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg,rgb(88, 83, 83),rgb(13, 202, 240), rgb(88, 83, 83));
+        }
+
+        .anaDiv::-webkit-scrollbar-button {
+            display: none;
+        }
     </style>
 }
 <div class="container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 pt-2">
             <div class="anaDiv">
-                <div class="form-floating mb-3">
-                    <input type="text" id="ara" onkeyup="filtrele()" class="form-control" placeholder=".">
-                    <label for="ara">Ara</label>
+                <div class="pt-2 inputDiv">
+                    <div class="form-floating mb-3">
+                        <input autocomplete="off" type="text" id="ara" onkeyup="filtrele()" class="form-control" placeholder=".">
+                        <label for="ara">Ara</label>
+                    </div>
                 </div>
-                @Model
+                <div class="myJstreeAnaDiv">
+                        @Model
+                </div>
             </div>
         </div>
     </div>
 </div>
 @section Scripts{
     <script>
-        $(".myJstree li").click(function (event) {
+
+        $(".myJstree li").each(function () {
+            if ($(this).children("ul").html() == undefined) {
+                $(this).css("cursor", "default");
+            }
+        });
+
+
+        $(".myJstree span").click(function (event) {
             event.stopPropagation();
-            var a = $(this);
-            if ($(this).children("ul").html() != undefined) {
-                $(this).children("ul").toggle("slide", function () {
+            var a = $(this).parent("li");
+            if ($(a).children("ul").html() != undefined) {
+                $(a).children("ul").toggle("slide", function () {
                     if ($(a).children("ul").css("display") != "none") {
                         $(a).prev().css({
                             "transform": "rotate(0deg)",
